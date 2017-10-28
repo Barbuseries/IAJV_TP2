@@ -57,6 +57,9 @@
     <ClCompile Include="SingleFileBehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseGameEntity.h">
@@ -135,6 +138,9 @@
       <Filter>misc</Filter>
     </ClInclude>
     <ClInclude Include="SingleFileBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,7 +21,8 @@ Vehicle::Vehicle(GameWorld* world,
                double    max_force,
                double    max_speed,
                double    max_turn_rate,
-               double    scale):    MovingEntity(position,
+               double    scale,
+			   bool		 lead):    MovingEntity(position,
                                                  scale,
                                                  velocity,
                                                  max_speed,
@@ -44,7 +45,7 @@ Vehicle::Vehicle(GameWorld* world,
   //set up the smoother
   m_pHeadingSmoother = new Smoother<Vector2D>(Prm.NumSamplesForSmoothing, Vector2D(0.0, 0.0)); 
   
- 
+  m_Leader = lead;
 }
 
 
@@ -124,24 +125,30 @@ void Vehicle::Render()
   //render neighboring vehicles in different colors if requested
   if (m_pWorld->RenderNeighbors())
   {
-    if (ID() == 0) gdi->RedPen();
-    else if(IsTagged()) gdi->GreenPen();
-    else gdi->BluePen();
+	  if (ID() == 0) gdi->RedPen();
+	  else if (IsTagged()) gdi->GreenPen();
+	  else gdi->BluePen();
   }
-
   else
   {
     gdi->BluePen();
   }
 
+  if (isLeader()) {
+	  gdi->RedPen();
+	  if (isMindControlled()) {
+		  gdi->GreenPen();
+	  }
+  }
+
   if (Steering()->isInterposeOn())
   {
-    gdi->RedPen();
+    gdi->YellowPen();
   }
 
   if (Steering()->isHideOn())
   {
-    gdi->GreenPen();
+    gdi->PinkPen();
   }
 
   if (isSmoothingOn())

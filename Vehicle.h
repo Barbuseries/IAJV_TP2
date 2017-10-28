@@ -63,6 +63,8 @@ private:
   Vehicle(const Vehicle&);
   Vehicle& operator=(const Vehicle&);
 
+  bool m_Leader;
+  bool m_MindControlled = false;
 
 public:
 
@@ -74,7 +76,8 @@ public:
          double    max_force,
          double    max_speed,
          double    max_turn_rate,
-         double    scale);
+         double    scale,
+		 bool lead = false);
 
   ~Vehicle();
 
@@ -83,7 +86,10 @@ public:
 
   void        Render();
 
-                                                                          
+  bool isLeader() { return m_Leader;};
+  bool isMindControlled() { return m_MindControlled; };
+  void MindControlToggle() { m_MindControlled = !m_MindControlled; }
+
   //-------------------------------------------accessor methods
   SteeringBehavior*const  Steering()const{return m_pSteering;}
   GameWorld*const         World()const{return m_pWorld;} 

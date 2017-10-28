@@ -76,6 +76,8 @@ private:
   bool  m_bViewKeys;
   bool  m_bShowCellSpaceInfo;
 
+  bool m_enableMindControl;
+
 
   void CreateObstacles();
 

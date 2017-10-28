@@ -13,7 +13,8 @@ Leader::Leader(GameWorld* world, Vector2D& initialPos)  : m_IsMindControlled(fal
 																  Prm.MaxSteeringForce,     //max force
 																  Prm.MaxSpeed,             //max velocity
 																  Prm.MaxTurnRatePerSecond, //max turn rate
-																  Prm.VehicleScale * 5)
+																  Prm.VehicleScale * 5,
+																  true)
 {
 	Steering()->WanderOn();
 }

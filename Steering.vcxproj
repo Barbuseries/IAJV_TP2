@@ -140,6 +140,7 @@
     <ClCompile Include="..\Common\misc\iniFileLoaderBase.cpp" />
     <ClCompile Include="..\Common\misc\WindowUtils.cpp" />
     <ClCompile Include="..\Common\Time\PrecisionTimer.cpp" />
+    <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="BaseGameEntity.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="EntityFunctionTemplates.h" />
+    <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="MovingEntity.h" />
     <ClInclude Include="Obstacle.h" />
