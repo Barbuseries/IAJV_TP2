@@ -10,10 +10,7 @@
 // in front of him'. This is implemented as 'follow the previously
 // created agent'.
 class Leader : public Vehicle
-{
-private:
-	bool m_IsMindControlled;
-	
+{	
 public:
     Leader(GameWorld* world, Vector2D& initialPos);
 };
@@ -26,7 +23,7 @@ private:
 	void SetTarget(Vehicle* target);
 	
 public:
-    Follower(GameWorld* world, Vector2D& initialPos);
+    Follower(GameWorld* world, Vector2D& initialPos, bool followLeader);
 	virtual void Update(double time_elapsed);
 };
 #endif /* _SINGLEFILEBEHAVIOR_H_ */

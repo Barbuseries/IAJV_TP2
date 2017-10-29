@@ -57,6 +57,12 @@ Vehicle::~Vehicle()
   delete m_pHeadingSmoother;
 }
 
+void Vehicle::MindControlToggle()
+{
+	m_MindControlled = !m_MindControlled;
+	m_MindControlled ? Steering()->WanderOff() : Steering()->WanderOn();
+}
+
 //------------------------------ Update ----------------------------------
 //
 //  Updates the vehicle's position from a series of steering behaviors
@@ -73,15 +79,22 @@ void Vehicle::Update(double time_elapsed)
 
   Vector2D SteeringForce;
 
-  //calculate the combined force from each steering behavior in the 
-  //vehicle's list
-  SteeringForce = m_pSteering->Calculate();
-    
-  //Acceleration = Force/Mass
-  Vector2D acceleration = SteeringForce / m_dMass;
+  if (isMindControlled())
+  {
+	  
+  }
+  else
+  {
+	  //calculate the combined force from each steering behavior in the 
+	  //vehicle's list
+	  SteeringForce = m_pSteering->Calculate();
+  }
 
-  //update velocity
-  m_vVelocity += acceleration * time_elapsed; 
+	//Acceleration = Force/Mass
+	Vector2D acceleration = SteeringForce / m_dMass;
+
+	//update velocity
+	m_vVelocity += acceleration * time_elapsed;
 
   //make sure vehicle does not exceed maximum velocity
   m_vVelocity.Truncate(m_dMaxSpeed);

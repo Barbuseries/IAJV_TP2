@@ -88,7 +88,7 @@ public:
 
   bool isLeader() { return m_Leader;};
   bool isMindControlled() { return m_MindControlled; };
-  void MindControlToggle() { m_MindControlled = !m_MindControlled; }
+  void MindControlToggle();
 
   //-------------------------------------------accessor methods
   SteeringBehavior*const  Steering()const{return m_pSteering;}
