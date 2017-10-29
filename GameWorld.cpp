@@ -114,8 +114,9 @@ GameWorld::GameWorld(int cx, int cy) :
 			cy / 2.0 + RandomClamped()*cy / 2.0);
 
 		Vehicle* pVehicle = NULL;
+		bool followLeader = (i == 0);
 
-		pVehicle = new Follower(this, SpawnPos);
+		pVehicle = new Follower(this, SpawnPos, followLeader);
 
 		m_Vehicles.push_back(pVehicle);
 
