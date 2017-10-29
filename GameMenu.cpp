@@ -100,8 +100,30 @@ GameMenu::GameMenu(HWND window, HINSTANCE instance) :
 		(HMENU)ID_OBSTACLE_COUNT,
 		instance,
 		NULL);
+/*
+	group[7] = CreateWindow(
+		"STATIC",
+		"Distance d'offset : (5-30)",
+		WS_CHILD | WS_VISIBLE | WS_BORDER,
+		20, 120,
+		175, 20,
+		mainWindow,
+		NULL,
+		instance,
+		NULL);
 
 	group[8] = CreateWindow(
+		"EDIT",
+		offset,
+		WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT | ES_NUMBER,
+		180, 120,
+		40, 20,
+		mainWindow,
+		(HMENU)ID_OFFSET_VALUE,
+		instance,
+		NULL);
+*/
+	group[10] = CreateWindow(
 		"BUTTON",
 		"SAVE",
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,

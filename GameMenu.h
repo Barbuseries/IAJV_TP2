@@ -22,7 +22,7 @@ private:
 	int	NumObstacles;
 	HWND mainWindow;
 	HINSTANCE mainInstance;
-	HWND group [10] ;
+	HWND group [11] ;
 
 public:
 

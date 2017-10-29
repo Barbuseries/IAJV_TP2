@@ -128,6 +128,7 @@ GameWorld::GameWorld(int cx, int cy) :
 	//create any obstacles or walls
 	//CreateObstacles();
 	//CreateWalls();
+	HandleMenuItems(IDR_WEIGHTED_SUM, NULL);
 }
 
 
