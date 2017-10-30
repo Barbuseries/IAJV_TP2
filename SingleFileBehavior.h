@@ -12,7 +12,15 @@
 class Leader : public Vehicle
 {	
 public:
+	bool m_IsMindControlled = false;
+	bool m_IsSetInMotion = false;
     Leader(GameWorld* world, Vector2D& initialPos);
+	
+	void toggleMindControl();
+	void manualDirection(Vector2D v);
+	void setIsSetInMotion(bool b);
+	void resetSpeed();
+
 };
 
 

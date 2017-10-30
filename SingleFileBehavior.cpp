@@ -18,6 +18,37 @@ Leader::Leader(GameWorld* world, Vector2D& initialPos)  : Vehicle(world,
 	Steering()->WanderOn();
 }
 
+void Leader::toggleMindControl() {
+	if (m_IsMindControlled) {
+		m_IsMindControlled = false;
+		Steering()->WanderOn();
+	}
+	else {
+		m_IsMindControlled = true;
+		Steering()->WanderOff();
+		this->SetVelocity(Vector2D(0, 0));
+	}
+}
+
+void Leader::manualDirection(Vector2D v) {
+	int const offset = 100;
+	if (m_IsSetInMotion && m_IsMindControlled) {
+		Steering()->OffsetPursuitOn(this, Vector2D(v.x * offset, v.y * offset));
+	}
+}
+
+void Leader::setIsSetInMotion(bool b) {
+	m_IsSetInMotion = b;
+	if (b == false)
+		this->SetVelocity(Vector2D(0, 0));
+	else
+		this->SetVelocity(Vector2D(this->m_vHeading.x * this->m_dMaxSpeed, this->m_vHeading.y * this->m_dMaxSpeed));
+}
+
+void  Leader::resetSpeed() {
+	this->SetVelocity(Vector2D(this->m_vVelocity.x * this->m_dMaxSpeed, this->m_vVelocity.y * this->m_dMaxSpeed));
+}
+
 Follower::Follower(GameWorld* world, Vector2D& initialPos, bool followLeader) : Vehicle(world,
 																						 initialPos,                 //initial position
 																						 RandFloat()*TwoPi,        //start rotation

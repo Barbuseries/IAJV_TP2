@@ -116,6 +116,7 @@ public:
 
   //handle WM_COMMAND messages
   void        HandleKeyPresses(WPARAM wParam);
+  void        HandleKeyUp(WPARAM wParam);
   void        HandleMenuItems(WPARAM wParam, HWND hwnd);
   
   void        TogglePause(){m_bPaused = !m_bPaused;}

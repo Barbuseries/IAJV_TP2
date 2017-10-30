@@ -139,7 +139,7 @@ LRESULT CALLBACK WindowProc(HWND   hwnd,
 
 	break;
 
-	case WM_KEYUP:
+	case WM_KEYDOWN:
 	{
 		switch (wParam)
 		{
@@ -168,7 +168,9 @@ LRESULT CALLBACK WindowProc(HWND   hwnd,
 	}//end WM_KEYUP
 
 	break;
-
+	case WM_KEYUP:
+		g_GameWorld->HandleKeyUp(wParam);
+		break;
 
 	case WM_PAINT:
 	{

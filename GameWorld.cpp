@@ -18,7 +18,7 @@
 #include <list>
 using std::list;
 
-
+Leader* leaderMindControlled;
 //------------------------------- ctor -----------------------------------
 //------------------------------------------------------------------------
 GameWorld::GameWorld(int cx, int cy) :
@@ -99,8 +99,10 @@ GameWorld::GameWorld(int cx, int cy) :
 		Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
 			cy / 2.0 + RandomClamped()*cy / 2.0);
 
-		Vehicle* pLeader = new Leader(this, SpawnPos);
-
+		Leader* pLeader = new Leader(this, SpawnPos);
+		if (i == 0) {
+			leaderMindControlled = pLeader;
+		}
 		m_Vehicles.push_back(pLeader);
 
 		//add it to the cell subdivision
@@ -346,10 +348,38 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 		}
 		break;
 
+	case VK_RETURN:
+		leaderMindControlled->toggleMindControl();
+		break;
+	case VK_UP:
+		leaderMindControlled->setIsSetInMotion(true);
+		break;
+	case VK_RIGHT:
+		leaderMindControlled->manualDirection(Vector2D(0.2, 0.8));
+		break;
+	case VK_LEFT:
+		leaderMindControlled->manualDirection(Vector2D(0.2, -0.8));
+		break;
 	}//end switch
 }
 
-
+void GameWorld::HandleKeyUp(WPARAM wParam) {
+	switch (wParam)
+	{
+	case VK_UP:
+		leaderMindControlled->Steering()->OffsetPursuitOff();
+		leaderMindControlled->setIsSetInMotion(false);
+		break;
+	case VK_RIGHT:
+		leaderMindControlled->Steering()->OffsetPursuitOff();
+		leaderMindControlled->resetSpeed();
+		break;
+	case VK_LEFT:
+		leaderMindControlled->Steering()->OffsetPursuitOff();
+		leaderMindControlled->resetSpeed();
+		break;
+	}
+}
 
 //-------------------------- HandleMenuItems -----------------------------
 void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
