@@ -17,19 +17,26 @@ GameMenu::GameMenu(HWND window, HINSTANCE instance) :
 	NumAgents = Prm.NumAgents;
 	NumObstacles = Prm.NumObstacles;
 	NumLeaders = Prm.NumLeaders;
+	OffsetX = Prm.AgentOffsetX;
+	OffsetY = Prm.AgentOffsetY;
+	int ret;
 	char agents[5];
 	_itoa(NumAgents, agents, 10);
 	char leaders[5];
 	_itoa(NumLeaders, leaders, 10);
 	char obstacles[5];
 	_itoa(NumObstacles, obstacles, 10);
+	char xoffset[5];
+	snprintf(xoffset, sizeof xoffset, "%f", OffsetX);
+	char yoffset[5];
+	snprintf(yoffset, sizeof yoffset, "%f", OffsetY);
 
 	group[0] = CreateWindow(
 		"BUTTON",
 		"Settings",
 		WS_CHILD | WS_VISIBLE | BS_GROUPBOX,
 		10, 10,
-		220, 140,
+		220, 170,
 		mainWindow,
 		NULL,
 		mainInstance,
@@ -100,10 +107,10 @@ GameMenu::GameMenu(HWND window, HINSTANCE instance) :
 		(HMENU)ID_OBSTACLE_COUNT,
 		instance,
 		NULL);
-/*
+
 	group[7] = CreateWindow(
 		"STATIC",
-		"Distance d'offset : (5-30)",
+		"Offset X : (0-4)",
 		WS_CHILD | WS_VISIBLE | WS_BORDER,
 		20, 120,
 		175, 20,
@@ -114,31 +121,53 @@ GameMenu::GameMenu(HWND window, HINSTANCE instance) :
 
 	group[8] = CreateWindow(
 		"EDIT",
-		offset,
-		WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT | ES_NUMBER,
+		xoffset,
+		WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT,
 		180, 120,
 		40, 20,
 		mainWindow,
-		(HMENU)ID_OFFSET_VALUE,
+		(HMENU)ID_OFFSET_X,
 		instance,
 		NULL);
-*/
+
+	group[9] = CreateWindow(
+		"STATIC",
+		"Offset Y : (0-4)",
+		WS_CHILD | WS_VISIBLE | WS_BORDER,
+		20, 150,
+		175, 20,
+		mainWindow,
+		NULL,
+		instance,
+		NULL);
+
 	group[10] = CreateWindow(
+		"EDIT",
+		yoffset,
+		WS_CHILD | WS_VISIBLE | WS_BORDER | ES_RIGHT,
+		180, 150,
+		40, 20,
+		mainWindow,
+		(HMENU)ID_OFFSET_Y,
+		instance,
+		NULL);
+
+	group[11] = CreateWindow(
 		"BUTTON",
 		"SAVE",
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-		20, 120,
+		20, 180,
 		60, 20,
 		mainWindow,
 		(HMENU)ID_SAVE_SETTINGS,
 		instance,
 		NULL);
 
-	group[9] = CreateWindow(
+	group[12] = CreateWindow(
 		"BUTTON",
 		"CANCEL",
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-		100, 120,
+		100, 180,
 		60, 20,
 		mainWindow,
 		(HMENU)ID_CANCEL_SETTINGS,
@@ -175,6 +204,7 @@ void GameMenu::HandleInput(WPARAM wParam, HWND hwnd)
 			MessageBox(hwnd, "Entrez un nombre de leader valide", "", MB_OK);
 			break;
 		}
+
 		//Check Follower Count
 		GetWindowText(group[4], buff, 1024);
 		NumAgents = atoi(buff);
@@ -185,6 +215,7 @@ void GameMenu::HandleInput(WPARAM wParam, HWND hwnd)
 			MessageBox(hwnd, "Entrez un nombre de follower valide", "", MB_OK);
 			break;
 		}
+
 		//Check Obstacle Count
 		GetWindowText(group[6], buff, 1024);
 		NumObstacles = atoi(buff);
@@ -195,6 +226,29 @@ void GameMenu::HandleInput(WPARAM wParam, HWND hwnd)
 			MessageBox(hwnd, "Entrez un nombre d'obstacles valide", "", MB_OK);
 			break;
 		}
+
+		//Check Offset X
+		GetWindowText(group[8], buff, 1024);
+		OffsetX = atof(buff);
+		if (OffsetX > 0 && OffsetX <= 4) {
+			Prm.AgentOffsetX = OffsetX;
+		}
+		else {
+			MessageBox(hwnd, "Entrez un offset valide", "", MB_OK);
+			break;
+		}
+
+		//Check Offset Y
+		GetWindowText(group[10], buff, 1024);
+		OffsetY = atof(buff);
+		if (OffsetY > 0 && OffsetY <= 4) {
+			Prm.AgentOffsetY = OffsetY;
+		}
+		else {
+			MessageBox(hwnd, "Entrez un offset valide", "", MB_OK);
+			break;
+		}
+
 		SendMessage(hwnd, WM_COMMAND, WM_SAVE_SETTINGS, NULL);
 		break;
 
