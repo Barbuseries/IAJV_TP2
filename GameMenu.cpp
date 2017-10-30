@@ -110,7 +110,7 @@ GameMenu::GameMenu(HWND window, HINSTANCE instance) :
 
 	group[7] = CreateWindow(
 		"STATIC",
-		"Offset X : (0-4)",
+		"Offset X : (-40-40)",
 		WS_CHILD | WS_VISIBLE | WS_BORDER,
 		20, 120,
 		175, 20,
@@ -132,7 +132,7 @@ GameMenu::GameMenu(HWND window, HINSTANCE instance) :
 
 	group[9] = CreateWindow(
 		"STATIC",
-		"Offset Y : (0-4)",
+		"Offset Y : (-40-40)",
 		WS_CHILD | WS_VISIBLE | WS_BORDER,
 		20, 150,
 		175, 20,
@@ -230,7 +230,7 @@ void GameMenu::HandleInput(WPARAM wParam, HWND hwnd)
 		//Check Offset X
 		GetWindowText(group[8], buff, 1024);
 		OffsetX = atof(buff);
-		if (OffsetX > 0 && OffsetX <= 4) {
+		if (OffsetX >= -40 && OffsetX <= 40 && OffsetX != 0) {
 			Prm.AgentOffsetX = OffsetX;
 		}
 		else {
@@ -241,7 +241,7 @@ void GameMenu::HandleInput(WPARAM wParam, HWND hwnd)
 		//Check Offset Y
 		GetWindowText(group[10], buff, 1024);
 		OffsetY = atof(buff);
-		if (OffsetY > 0 && OffsetY <= 4) {
+		if (OffsetY >= -40 && OffsetY <= 40 && OffsetY != 0) {
 			Prm.AgentOffsetY = OffsetY;
 		}
 		else {
