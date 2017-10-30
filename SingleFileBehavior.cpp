@@ -34,6 +34,8 @@ Follower::Follower(GameWorld* world, Vector2D& initialPos, bool followLeader) : 
 		Vehicle* target = World()->Agents().back();
 		SetTarget(target);
 	}
+
+	Steering()->SeparationOn();
 }
 
 void Follower::SetTarget(Vehicle* target) {

@@ -19,6 +19,7 @@ public:
 class Follower : public Vehicle
 {
 private:
+	Vehicle *m_Target;
 	bool m_IsFollowingLeader;
 	void SetTarget(Vehicle* target);
 	
