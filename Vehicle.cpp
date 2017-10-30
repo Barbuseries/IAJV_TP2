@@ -59,8 +59,36 @@ Vehicle::~Vehicle()
 
 void Vehicle::MindControlToggle()
 {
-	m_MindControlled = !m_MindControlled;
-	m_MindControlled ? Steering()->WanderOff() : Steering()->WanderOn();
+	if (m_MindControlled) {
+		m_MindControlled = false;
+		Steering()->WanderOn();
+	}
+	else {
+		m_MindControlled = true;
+		Steering()->WanderOff();
+		this->SetVelocity(Vector2D(0, 0));
+	}
+}
+
+void Vehicle::manualDirection(Vector2D v) {
+	int const offset = 100;
+	if (m_IsSetInMotion && m_MindControlled) {
+		Steering()->OffsetPursuitOn(this, Vector2D(v.x * offset, v.y * offset));
+	}
+}
+
+void Vehicle::setIsSetInMotion(bool b) {
+	m_IsSetInMotion = b;
+	if (m_MindControlled) {
+		if (b == false)
+			this->SetVelocity(Vector2D(0, 0));
+		else
+			this->SetVelocity(Vector2D(this->m_vHeading.x * this->m_dMaxSpeed, this->m_vHeading.y * this->m_dMaxSpeed));
+	}
+}
+
+void  Vehicle::resetSpeed() {
+	this->SetVelocity(Vector2D(this->m_vVelocity.x * this->m_dMaxSpeed, this->m_vVelocity.y * this->m_dMaxSpeed));
 }
 
 //------------------------------ Update ----------------------------------
@@ -69,26 +97,20 @@ void Vehicle::MindControlToggle()
 //------------------------------------------------------------------------
 void Vehicle::Update(double time_elapsed)
 {    
-  //update the time elapsed
-  m_dTimeElapsed = time_elapsed;
+	//update the time elapsed
+	m_dTimeElapsed = time_elapsed;
 
-  //keep a record of its old position so we can update its cell later
-  //in this method
-  Vector2D OldPos = Pos();
+	//keep a record of its old position so we can update its cell later
+	//in this method
+	Vector2D OldPos = Pos();
 
 
-  Vector2D SteeringForce;
+	Vector2D SteeringForce;
 
-  if (isMindControlled())
-  {
-	  
-  }
-  else
-  {
-	  //calculate the combined force from each steering behavior in the 
-	  //vehicle's list
-	  SteeringForce = m_pSteering->Calculate();
-  }
+	//calculate the combined force from each steering behavior in the 
+	//vehicle's list
+	SteeringForce = m_pSteering->Calculate();
+  
 
 	//Acceleration = Force/Mass
 	Vector2D acceleration = SteeringForce / m_dMass;

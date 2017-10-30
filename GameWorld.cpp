@@ -349,7 +349,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 		break;
 
 	case VK_RETURN:
-		leaderMindControlled->toggleMindControl();
+		leaderMindControlled->MindControlToggle();
 		break;
 	case VK_UP:
 		leaderMindControlled->setIsSetInMotion(true);

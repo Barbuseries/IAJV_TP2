@@ -65,7 +65,7 @@ private:
 
   bool m_Leader;
   bool m_MindControlled = false;
-
+  bool m_IsSetInMotion = false;
 public:
 
   Vehicle(GameWorld* world,
@@ -88,7 +88,7 @@ public:
 
   bool isLeader() { return m_Leader;};
   bool isMindControlled() { return m_MindControlled; };
-  void MindControlToggle();
+ 
 
   //-------------------------------------------accessor methods
   SteeringBehavior*const  Steering()const{return m_pSteering;}
@@ -103,7 +103,11 @@ public:
   void        ToggleSmoothing(){m_bSmoothingOn = !m_bSmoothingOn;}
   
   double       TimeElapsed()const{return m_dTimeElapsed;}
- 
+ // mindControl function
+  void MindControlToggle();
+  void manualDirection(Vector2D v);
+  void setIsSetInMotion(bool b);
+  void resetSpeed();
 };
 
 
