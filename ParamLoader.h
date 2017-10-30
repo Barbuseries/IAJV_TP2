@@ -25,6 +25,10 @@ private:
   {
     NumLeaders				= GetNextParameterInt();
     NumAgents               = GetNextParameterInt();
+
+	AgentOffsetX			= GetNextParameterFloat();
+	AgentOffsetY            = GetNextParameterFloat();
+
     NumObstacles            = GetNextParameterInt();
     MinObstacleRadius       = GetNextParameterFloat();
     MaxObstacleRadius       = GetNextParameterFloat();
@@ -82,6 +86,10 @@ public:
   int NumLeaders;
   int	NumAgents;
   int	NumObstacles;
+
+  float AgentOffsetX;
+  float AgentOffsetY;
+
   double MinObstacleRadius;
   double MaxObstacleRadius;
 

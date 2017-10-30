@@ -38,7 +38,7 @@ Follower::Follower(GameWorld* world, Vector2D& initialPos, bool followLeader) : 
 
 void Follower::SetTarget(Vehicle* target) {
 	if (target) {
-		Steering()->OffsetPursuitOn(target, Vector2D(0.5, 0.5));
+		Steering()->OffsetPursuitOn(target, Vector2D(Prm.AgentOffsetX, Prm.AgentOffsetY));
 	}
 }
 
