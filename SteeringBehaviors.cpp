@@ -352,6 +352,13 @@ Vector2D SteeringBehavior::CalculatePrioritized()
     if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
   }
 
+  if (On(flocking_v))
+  {
+	  force = FlockingV(m_pVehicle->World()->Agents());
+
+	  if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+  }
+
   return m_vSteeringForce;
 }
 
@@ -474,6 +481,11 @@ Vector2D SteeringBehavior::CalculateWeightedSum()
   if (On(follow_path))
   {
     m_vSteeringForce += FollowPath() * m_dWeightFollowPath;
+  }
+
+  if (On(flocking_v))
+  {
+	  m_vSteeringForce += FlockingV(m_pVehicle->World()->Agents());
   }
 
   m_vSteeringForce.Truncate(m_pVehicle->MaxForce());
@@ -1638,9 +1650,97 @@ void SteeringBehavior::RenderAids( )
     if (KEYDOWN('C')){m_dWaypointSeekDistSq -= 1.0; Clamp(m_dWaypointSeekDistSq, 0.0f, 400.0f);}
   }  
 
+  if (On(flocking_v))
+  {
+	  gdi->RedPen();
+	  gdi->Circle(m_pVehicle->Pos(), sqrt(4000.0f));
+
+	  gdi->GreenPen();
+	  gdi->Circle(m_pVehicle->Pos(), sqrt(500.0f));
+  }
 }
 
+Vector2D SteeringBehavior::FlockingV(const std::vector<Vehicle*> &agents)
+{
+	Vector2D SteeringForce = {};
 
+	double tooFar = 6000.0;
+	double tooClose = 500.0;
+
+	double minDistanceSq = MaxDouble;
+	Vehicle *closestAgent = NULL;
+
+	for (int i = 0; i < agents.size(); ++i)
+	{
+		Vehicle *it = agents[i];
+
+		if (it == m_pVehicle) continue;
+
+		double distanceSq = m_pVehicle->Pos().DistanceSq(it->Pos());
+
+		if (distanceSq < minDistanceSq)
+		{
+			minDistanceSq = distanceSq;
+			closestAgent = it;
+		}
+	}
+
+	if (closestAgent)
+	{
+		if (minDistanceSq >= tooFar)
+		{
+			SteeringForce = OffsetPursuit(closestAgent, tooClose * Vector2D(1, 1)) * 1.5;
+		}
+		else if ((minDistanceSq < tooFar) && (minDistanceSq > tooClose))
+		{
+			Vector2D delta = closestAgent->Pos() - m_pVehicle->Pos();
+			double length = delta.Length();
+
+			delta.Normalize();
+
+			double value = delta.Dot(closestAgent->Heading());
+
+			if (value > 0)
+			{
+				double angle = acos(value) * 180.0 / Pi;
+
+				if ((angle > -45) && (angle > 45))
+				{
+					Vector2D evade = delta.Perp();
+
+					evade *=  m_pVehicle->MaxSpeed();
+
+					SteeringForce = Seek(m_pVehicle->Pos() + evade);
+				}
+			}
+		}
+		else if (minDistanceSq <= tooClose)
+		{
+			SteeringForce = OffsetPursuit(closestAgent, tooClose * Vector2D(1, 1)) * 0.25;
+		}
+	}
+
+	double averageSpeedSq = 0;
+	Vector2D averageDirection = {};
+	int count = 0;
+
+	for (int i = 0; i < agents.size(); ++i)
+	{
+		Vehicle *it = agents[i];
+
+		if (!it->IsTagged() || (it == m_pVehicle)) continue;
+		
+		averageSpeedSq   += it->Velocity().LengthSq();
+		averageDirection += it->Heading();
+	}
+
+	if (count)
+	{
+		SteeringForce += (averageDirection / count) * (sqrt(averageSpeedSq) / count);
+	}
+
+	return SteeringForce;
+}
 
 
 
